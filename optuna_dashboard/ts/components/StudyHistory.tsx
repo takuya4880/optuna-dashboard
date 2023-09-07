@@ -17,6 +17,7 @@ import { DataGrid, DataGridColumn } from "./DataGrid"
 import { GraphHyperparameterImportance } from "./GraphHyperparameterImportances"
 import { UserDefinedPlot } from "./UserDefinedPlot"
 import { BestTrialsCard } from "./BestTrialsCard"
+import { StudyNote } from "./Note"
 import {
   useStudyDetailValue,
   useStudyDirections,
@@ -167,6 +168,13 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
           </Card>
         </Grid2>
       </Grid2>
+      {studyDetail !== null && (
+        <StudyNote
+          studyId={studyId}
+          latestNote={studyDetail.note}
+          cardSx={{ flexGrow: 1 }}
+        />
+      )}
     </Box>
   )
 }
