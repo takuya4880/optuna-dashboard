@@ -91,23 +91,10 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
           </CardContent>
         </Card>
       ) : null}
-      <Card
-        sx={{
-          margin: theme.spacing(2),
-        }}
-      >
-        <CardContent>
-          <GraphHistory
-            studies={studyDetail !== null ? [studyDetail] : []}
-            includePruned={includePruned}
-            logScale={logScale}
-          />
-        </CardContent>
-      </Card>
       <Grid2 container spacing={2} sx={{ padding: theme.spacing(0, 2) }}>
         {studyDetail !== null &&
           studyDetail.plotly_graph_objects.map((go) => (
-            <Grid2 xs={6} key={go.id}>
+            <Grid2 xs={4} key={go.id}>
               <Card>
                 <CardContent>
                   <UserDefinedPlot graphObject={go} />
@@ -115,9 +102,25 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
               </Card>
             </Grid2>
           ))}
+        {studyDetail !== null && (
+          <Grid2 xs={4} >
+            <Card
+              sx={{
+                margin: theme.spacing(2),
+              }} >
+              <CardContent>
+                <StudyNote
+                  studyId={studyId}
+                  latestNote={studyDetail.note}
+                  cardSx={{ flexGrow: 1 }}
+                />
+              </CardContent>
+            </Card>
+          </Grid2>
+        )}
         {studyDetail !== null &&
-        studyDetail.directions.length == 1 &&
-        studyDetail.has_intermediate_values ? (
+          studyDetail.directions.length == 1 &&
+          studyDetail.has_intermediate_values ? (
           <Grid2 xs={6}>
             <GraphIntermediateValues
               trials={trials}
@@ -126,15 +129,28 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
             />
           </Grid2>
         ) : null}
+        <Grid2 xs={4}>
+          <GraphTimeline study={studyDetail} />
+        </Grid2>
+        <Card
+          sx={{
+            margin: theme.spacing(2),
+          }}
+        >
+          <CardContent>
+            <GraphHistory
+              studies={studyDetail !== null ? [studyDetail] : []}
+              includePruned={includePruned}
+              logScale={logScale}
+            />
+          </CardContent>
+        </Card>
         <Grid2 xs={6}>
           <GraphHyperparameterImportance
             studyId={studyId}
             study={studyDetail}
             graphHeight="450px"
           />
-        </Grid2>
-        <Grid2 xs={6}>
-          <GraphTimeline study={studyDetail} />
         </Grid2>
         <Grid2 xs={6} spacing={2}>
           <BestTrialsCard studyDetail={studyDetail} />
@@ -168,29 +184,6 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
           </Card>
         </Grid2>
       </Grid2>
-      {studyDetail !== null && (
-        <Card
-          sx={{
-            margin: theme.spacing(2),
-          }} >
-          <CardContent>
-            <Typography
-              variant="h6"
-              sx={{
-                margin: "1em 0",
-                fontWeight: theme.typography.fontWeightBold,
-              }}
-            >
-              Study Note
-            </Typography>
-            <StudyNote
-              studyId={studyId}
-              latestNote={studyDetail.note}
-              cardSx={{ flexGrow: 1 }}
-            />
-          </CardContent>
-        </Card>
-      )}
     </Box>
   )
 }

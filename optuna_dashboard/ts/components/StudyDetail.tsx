@@ -71,7 +71,7 @@ export const StudyDetail: FC<{
       return
     }
     const nTrials = studyDetail ? studyDetail.trials.length : 0
-    let interval = reloadInterval * 1000
+    let interval = reloadInterval * 100
 
     // For Human-in-the-loop Optimization, the interval is set to 2 seconds
     // when the number of trials is small, and the page is "trialList" or top page of preferential.
@@ -128,14 +128,14 @@ export const StudyDetail: FC<{
         <Grid2 container spacing={2} sx={{ padding: theme.spacing(0, 2) }}>
           {studyDetail !== null
             ? studyDetail.directions.map((d, i) => (
-                <Grid2 xs={6} key={i}>
-                  <Card>
-                    <CardContent>
-                      <GraphEdf studies={[studyDetail]} objectiveId={i} />
-                    </CardContent>
-                  </Card>
-                </Grid2>
-              ))
+              <Grid2 xs={6} key={i}>
+                <Card>
+                  <CardContent>
+                    <GraphEdf studies={[studyDetail]} objectiveId={i} />
+                  </CardContent>
+                </Card>
+              </Grid2>
+            ))
             : null}
         </Grid2>
       </Box>
