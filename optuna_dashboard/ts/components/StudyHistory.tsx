@@ -178,7 +178,8 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
               if (
                 a.mimetype === "chemical/x-pdb" ||
                 a.mimetype === "chemical/x-mol2" ||
-                a.mimetype === "chemical/x-mdl-sdfile"
+                a.mimetype === "chemical/x-mdl-sdfile" ||
+                a.mimetype === "chemical/x-cif"
               ) {
                 return (
                   <Grid2 xs={6}>
@@ -206,6 +207,7 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
                         src={artifactUrl}
                         width={"100%"}
                         height={height}
+                        rotate={true}
                         filetype={a.filename.split(".").pop()}
                       />
                     </Box>
