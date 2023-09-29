@@ -7,6 +7,7 @@ type AtomsArtifactViewerProps = {
   src: string
   width: string
   height: string
+  rotate: boolean
   filetype: string | undefined
 }
 
@@ -19,6 +20,10 @@ export const AtomsArtifactViewer: React.FC<AtomsArtifactViewerProps> = (
     const reader = new FileReader()
     reader.onload = function (e) {
       const data = e.target?.result
+      if (props.rotate) {
+        stage.viewerControls.rotate([0, 1, 0, 0])
+        stage.setSpin([0, 1, 0], 10);
+      }
       if (typeof data === "string") {
         stage
           .loadFile(data, { ext: props.filetype, defaultRepresentation: false })
