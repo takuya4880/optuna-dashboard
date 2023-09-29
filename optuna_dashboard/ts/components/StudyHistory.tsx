@@ -2,11 +2,13 @@ import React, { FC, useState } from "react"
 import {
   Box,
   Card,
+  CardMedia,
   CardContent,
   FormControl,
   Switch,
   Typography,
   useTheme,
+  IconButton,
 } from "@mui/material"
 import { GraphParetoFront } from "./GraphParetoFront"
 import { GraphHistory } from "./GraphHistory"
@@ -24,6 +26,9 @@ import {
   useStudySummaryValue,
 } from "../state"
 import FormControlLabel from "@mui/material/FormControlLabel"
+import DownloadIcon from "@mui/icons-material/Download"
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile"
+import { AtomsArtifactViewer } from "./AtomsArtifactViewer"
 
 export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
   const theme = useTheme()
@@ -115,6 +120,181 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
               </Card>
             </Grid2>
           ))}
+        { studyDetail !== null && studyDetail.artifacts.map((a) => {
+              const width = "100%"
+              const height = "450px"
+              const artifactUrl = `/artifacts/${studyDetail.id}/${a.artifact_id}`
+              if (a.mimetype.startsWith("image")) {
+                // Avoid showing images in this branch.
+                /*
+                return (
+                  <Card
+                    key={a.artifact_id}
+                    sx={{
+                      marginBottom: theme.spacing(2),
+                      width: width,
+                      margin: theme.spacing(0, 1, 1, 0),
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height={height}
+                      image={artifactUrl}
+                      alt={a.filename}
+                    />
+                    <CardContent
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        padding: `${theme.spacing(1)} !important`,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          p: theme.spacing(0.5, 0),
+                          flexGrow: 1,
+                          wordWrap: "break-word",
+                          maxWidth: `calc(100% - ${theme.spacing(8)})`,
+                        }}
+                      >
+                        {a.filename}
+                      </Typography>
+                      <IconButton
+                        aria-label="download artifact"
+                        size="small"
+                        color="inherit"
+                        download={a.filename}
+                        sx={{ margin: "auto 0" }}
+                        href={artifactUrl}
+                      >
+                        <DownloadIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                )
+                */
+                return null
+              }
+              if (
+                a.mimetype === "chemical/x-pdb" ||
+                a.mimetype === "chemical/x-mol2" ||
+                a.mimetype === "chemical/x-mdl-sdfile"
+              ) {
+                return (
+                  <Grid2 xs={6}>
+                  <Card
+                    key={a.artifact_id}
+                    sx={{
+                      marginBottom: theme.spacing(2),
+                      display: "flex",
+                      flexDirection: "column",
+                      width: width,
+                      minHeight: "100%",
+                      margin: theme.spacing(0, 1, 1, 0),
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <AtomsArtifactViewer
+                        artifactId={a.artifact_id}
+                        src={artifactUrl}
+                        width={"100%"}
+                        height={height}
+                        filetype={a.filename.split(".").pop()}
+                      />
+                    </Box>
+                    <CardContent
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        padding: `${theme.spacing(1)} !important`,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          p: theme.spacing(0.5, 0),
+                          flexGrow: 1,
+                          maxWidth: `calc(100% - ${theme.spacing(8)})`,
+                        }}
+                      >
+                        {a.filename}
+                      </Typography>
+                      <IconButton
+                        aria-label="download artifact"
+                        size="small"
+                        color="inherit"
+                        sx={{ margin: "auto 0" }}
+                        download={a.filename}
+                        href={artifactUrl}
+                      >
+                        <DownloadIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                  </Grid2>
+                )
+              } else {
+                return (
+                  <Grid2 xs={6}>
+                  <Card
+                    key={a.artifact_id}
+                    sx={{
+                      marginBottom: theme.spacing(2),
+                      display: "flex",
+                      flexDirection: "column",
+                      width: width,
+                      minHeight: "100%",
+                      margin: theme.spacing(0, 1, 1, 0),
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <InsertDriveFileIcon sx={{ fontSize: 80 }} />
+                    </Box>
+                    <CardContent
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        padding: `${theme.spacing(1)} !important`,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          p: theme.spacing(0.5, 0),
+                          flexGrow: 1,
+                          maxWidth: `calc(100% - ${theme.spacing(8)})`,
+                        }}
+                      >
+                        {a.filename}
+                      </Typography>
+                      <IconButton
+                        aria-label="download artifact"
+                        size="small"
+                        color="inherit"
+                        sx={{ margin: "auto 0" }}
+                        download={a.filename}
+                        href={artifactUrl}
+                      >
+                        <DownloadIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                  </Grid2>
+                )
+              }
+        })}
         {studyDetail !== null &&
         studyDetail.directions.length == 1 &&
         studyDetail.has_intermediate_values ? (
@@ -169,28 +349,28 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
         </Grid2>
       </Grid2>
       {studyDetail !== null && (
-        <Card
-          sx={{
-            margin: theme.spacing(2),
-          }}
-        >
-          <CardContent>
-            <Typography
-              variant="h6"
-              sx={{
-                margin: "1em 0",
-                fontWeight: theme.typography.fontWeightBold,
-              }}
-            >
-              Study Note
-            </Typography>
-            <StudyNote
-              studyId={studyId}
-              latestNote={studyDetail.note}
-              cardSx={{ flexGrow: 1 }}
-            />
-          </CardContent>
-        </Card>
+          <Card
+            sx={{
+              margin: theme.spacing(2),
+            }}
+          >
+            <CardContent>
+              <Typography
+                variant="h6"
+                sx={{
+                  margin: "1em 0",
+                  fontWeight: theme.typography.fontWeightBold,
+                }}
+              >
+                Study Note
+              </Typography>
+              <StudyNote
+                studyId={studyId}
+                latestNote={studyDetail.note}
+                cardSx={{ flexGrow: 1 }}
+              />
+            </CardContent>
+          </Card>
       )}
     </Box>
   )
