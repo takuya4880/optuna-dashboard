@@ -172,7 +172,8 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
         <Card
           sx={{
             margin: theme.spacing(2),
-          }} >
+          }}
+        >
           <CardContent>
             <Typography
               variant="h6"
