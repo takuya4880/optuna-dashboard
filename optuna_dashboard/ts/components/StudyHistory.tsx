@@ -184,6 +184,30 @@ export const StudyHistory: FC<{ studyId: number }> = ({ studyId }) => {
           </Card>
         </Grid2>
       </Grid2>
+      {studyDetail !== null && (
+        <Card
+          sx={{
+            margin: theme.spacing(2),
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              sx={{
+                margin: "1em 0",
+                fontWeight: theme.typography.fontWeightBold,
+              }}
+            >
+              Study Note
+            </Typography>
+            <StudyNote
+              studyId={studyId}
+              latestNote={studyDetail.note}
+              cardSx={{ flexGrow: 1 }}
+            />
+          </CardContent>
+        </Card>
+      )}
     </Box>
   )
 }
